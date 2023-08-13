@@ -1,7 +1,6 @@
 #import modules
 from itertools import product
 import pandas as pd
-import gspread
 
 #calculate the number of months in x years
 def years_to_months(year):
@@ -47,7 +46,8 @@ def cost_of_credit(principal, year_term, annual_interest_rate):
 
 if __name__ == '__main__':
 
-    #test uses
+    ##test uses##
+    
     #monthly_payment(400000, 20, 0.0365)
     #cost_of_credit(400000, 20, 0.0365)
 
@@ -55,7 +55,7 @@ if __name__ == '__main__':
     #df = pd.read_excel(<path and file>.csv', sheet_name= 'name', header = 0)
     #df = pd.read_csv('<path and file>.csv')
 
-    #test data
+    #test data 
     deposit = 200000
     price_list = [300000, 350000, 400000, 450000, 500000, 
                   550000, 600000, 650000, 700000, 750000,
@@ -69,13 +69,14 @@ if __name__ == '__main__':
                      0.0705, 0.0715, 0.058, 0.0555, 0.035, 0.0365, 0.038,
                      0.0385, 0.04, 0.042, 0.044, 0.045, 0.037, 0.0405]
 
-    #create every combinations
+    #create every combination of principal, rate term
     combos = list(product(mortgage_list, term_list, interest_list))
 
     df = pd.DataFrame(combos, columns =['Mortgage', 'Term', 'Interest'])
 
     #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
+    #apply functions to every row of the dataset creating a new column for each function
     df['Monthly_Repayment'] = df.apply(lambda row: monthly_payment(row['Mortgage'], row['Term'], row['Interest']), axis = 1)
     df['Cost_of_Credit'] = df.apply(lambda row: cost_of_credit(row['Mortgage'], row['Term'], row['Interest']), axis = 1)
 
